@@ -1,0 +1,27 @@
+// This is your Prisma schema file
+// GrowthRing Database Schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Profile {
+  id           String    @id @default(cuid())
+  xUsername    String    @unique @map("x_username")
+  displayName  String    @map("display_name")
+  bio          String?   @db.Text
+  avatarUrl    String?   @map("avatar_url")
+  niche        String
+  country      String
+  lookingFor   Json      @map("looking_for")
+  lastActive   DateTime  @default(now()) @map("last_active")
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@map("profiles")
+}

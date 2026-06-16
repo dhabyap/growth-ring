@@ -1,0 +1,1198 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0A0A0A;
+    --bg2: #111111;
+    --bg3: #1A1A1A;
+    --bg4: #232323;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #F0F0F0;
+    --text2: #888;
+    --text3: #555;
+    --mint: #00E5A0;
+    --mint-dim: rgba(0,229,160,0.12);
+    --mint-glow: rgba(0,229,160,0.06);
+    --amber: #F5A623;
+    --blue: #4DA6FF;
+    --red: #FF5F5F;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .page { display: none; }
+  .page.active { display: block; }
+
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-ring {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2.5px solid var(--mint);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo-ring::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--mint);
+    border-radius: 50%;
+  }
+
+  .nav-actions { display: flex; gap: 8px; align-items: center; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    border-radius: 99px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.15s;
+    letter-spacing: -0.1px;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text2);
+    border: 1px solid var(--border2);
+  }
+
+  .btn-ghost:hover { background: var(--bg3); color: var(--text); }
+
+  .btn-primary {
+    background: var(--mint);
+    color: #000;
+  }
+
+  .btn-primary:hover { background: #00ffb0; }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border2);
+  }
+
+  .btn-outline:hover { border-color: var(--mint); color: var(--mint); }
+
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+  }
+
+  .dot-green { background: var(--mint); animation: pulse-green 2s infinite; }
+  .dot-amber { background: var(--amber); }
+  .dot-blue { background: var(--blue); }
+
+  @keyframes pulse-green {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(0,229,160,0.4); }
+    50% { box-shadow: 0 0 0 4px rgba(0,229,160,0); }
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 8px;
+    border-radius: 99px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+  }
+
+  .badge-green { background: var(--mint-dim); color: var(--mint); }
+  .badge-amber { background: rgba(245,166,35,0.12); color: var(--amber); }
+  .badge-blue { background: rgba(77,166,255,0.12); color: var(--blue); }
+
+  .niche-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 8px;
+    border-radius: 99px;
+    font-size: 11px;
+    font-weight: 500;
+    background: var(--bg4);
+    color: var(--text2);
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: -0.2px;
+  }
+
+  .mono { font-family: 'JetBrains Mono', monospace; }
+
+  .user-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+
+  .user-card:hover {
+    border-color: var(--border2);
+    background: var(--bg4);
+    transform: translateY(-1px);
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--bg4), var(--bg3));
+    border: 1px solid var(--border2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--mint);
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .avatar-lg {
+    width: 64px;
+    height: 64px;
+    font-size: 20px;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 24px 0;
+  }
+
+  input, select, textarea {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    padding: 10px 14px;
+    width: 100%;
+    outline: none;
+    transition: border 0.15s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--mint);
+  }
+
+  select option { background: #1a1a1a; }
+
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text2);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .form-group { margin-bottom: 20px; }
+
+  .checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+  }
+
+  .checkbox-pill {
+    padding: 6px 14px;
+    border-radius: 99px;
+    border: 1px solid var(--border2);
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+    color: var(--text2);
+  }
+
+  .checkbox-pill.selected {
+    background: var(--mint-dim);
+    border-color: var(--mint);
+    color: var(--mint);
+  }
+
+  .stat-row {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--text2);
+  }
+
+  .stat-row strong { color: var(--text); font-weight: 600; }
+
+  .rank-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text3);
+    min-width: 28px;
+    padding: 2px 0;
+  }
+
+  /* ---- LANDING PAGE ---- */
+
+  .hero {
+    padding: 80px 24px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border: 1px solid var(--border2);
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 28px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .hero-eyebrow .live-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--mint);
+    animation: pulse-green 1.5s infinite;
+  }
+
+  .hero h1 {
+    font-size: clamp(36px, 5vw, 68px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1.05;
+    color: var(--text);
+    max-width: 780px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 span { color: var(--mint); }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text2);
+    max-width: 540px;
+    line-height: 1.6;
+    margin-bottom: 36px;
+  }
+
+  .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+  .live-stats {
+    display: flex;
+    gap: 32px;
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+
+  .live-stat-item { display: flex; flex-direction: column; gap: 2px; }
+
+  .live-stat-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--mint);
+    line-height: 1;
+  }
+
+  .live-stat-label {
+    font-size: 12px;
+    color: var(--text3);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .section-title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  .section-link {
+    font-size: 13px;
+    color: var(--mint);
+    cursor: pointer;
+    font-weight: 500;
+    background: none;
+    border: none;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .section-link:hover { text-decoration: underline; }
+
+  .section-pad { padding: 40px 0; }
+
+  .trending-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+  }
+
+  .trending-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .trending-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--mint);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .trending-card:hover::before { transform: scaleX(1); }
+  .trending-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+
+  .trending-rank {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text3);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .how-section {
+    padding: 60px 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .how-steps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+    margin-top: 36px;
+  }
+
+  .how-step {
+    padding: 24px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    position: relative;
+  }
+
+  .step-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--mint);
+    font-weight: 600;
+    margin-bottom: 12px;
+    display: block;
+    letter-spacing: 1px;
+  }
+
+  .step-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+
+  .step-desc { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .cta-section {
+    padding: 80px 0;
+    text-align: center;
+  }
+
+  .cta-box {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 60px 40px;
+    max-width: 600px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-box::before {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 300px;
+    height: 300px;
+    background: var(--mint-glow);
+    border-radius: 50%;
+    filter: blur(60px);
+    pointer-events: none;
+  }
+
+  .cta-box h2 {
+    font-size: 32px;
+    font-weight: 700;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+  }
+
+  .cta-box p { color: var(--text2); margin-bottom: 28px; }
+
+  /* ---- FEED PAGE ---- */
+
+  .feed-header {
+    padding: 32px 0 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .feed-header h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    margin-bottom: 4px;
+  }
+
+  .feed-header p { font-size: 14px; color: var(--text2); }
+
+  .filter-bar {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 16px 0;
+    flex-wrap: wrap;
+  }
+
+  .filter-chip {
+    padding: 6px 14px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--text2);
+    font-family: 'Space Grotesk', sans-serif;
+    transition: all 0.15s;
+    letter-spacing: -0.1px;
+  }
+
+  .filter-chip.active { background: var(--mint); color: #000; border-color: var(--mint); }
+  .filter-chip:hover:not(.active) { border-color: var(--border2); color: var(--text); background: var(--bg3); }
+
+  .sort-select {
+    width: auto;
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 99px;
+    margin-left: auto;
+  }
+
+  .feed-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 12px;
+    padding: 20px 0;
+  }
+
+  .feed-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .feed-card:hover { border-color: var(--border2); background: var(--bg4); }
+
+  .feed-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .feed-card-info { flex: 1; min-width: 0; }
+
+  .handle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .niche-label { font-size: 12px; color: var(--text2); margin-top: 1px; }
+
+  .feed-card-stats {
+    display: flex;
+    gap: 16px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    margin-top: 12px;
+  }
+
+  .mini-stat { font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+  .mini-stat strong { display: block; font-size: 14px; color: var(--text); font-weight: 600; }
+  .mini-stat span { color: var(--text3); }
+
+  .looking-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 10px; }
+
+  /* ---- PROFILE PAGE ---- */
+
+  .profile-hero {
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .profile-top { display: flex; gap: 20px; align-items: flex-start; }
+
+  .profile-meta { flex: 1; }
+
+  .profile-name {
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.6px;
+    margin-bottom: 2px;
+  }
+
+  .profile-handle {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    color: var(--mint);
+    margin-bottom: 10px;
+    display: block;
+  }
+
+  .profile-bio { font-size: 14px; color: var(--text2); line-height: 1.6; margin-bottom: 14px; }
+
+  .profile-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+
+  .profile-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .profile-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .stat-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    text-align: center;
+  }
+
+  .stat-box-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text);
+    display: block;
+  }
+
+  .stat-box-label { font-size: 11px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.4px; margin-top: 2px; }
+
+  .profile-section { padding: 28px 0; border-bottom: 1px solid var(--border); }
+
+  .looking-for-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+
+  .lf-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 99px;
+    font-size: 13px;
+    color: var(--text2);
+  }
+
+  .lf-check {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--mint-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .lf-check::after {
+    content: '✓';
+    font-size: 10px;
+    color: var(--mint);
+    font-weight: 700;
+  }
+
+  .share-card {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-top: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .share-card-text { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text2); }
+  .share-card-text strong { color: var(--mint); font-size: 15px; display: block; margin-bottom: 2px; }
+
+  /* ---- CREATE PROFILE ---- */
+
+  .create-page { padding: 40px 0 60px; }
+
+  .create-header { margin-bottom: 36px; }
+
+  .create-header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.8px;
+    margin-bottom: 6px;
+  }
+
+  .create-header p { color: var(--text2); font-size: 15px; }
+
+  .create-form {
+    max-width: 520px;
+  }
+
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  .progress-steps {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 32px;
+    align-items: center;
+  }
+
+  .progress-step {
+    height: 3px;
+    flex: 1;
+    border-radius: 99px;
+    background: var(--border);
+    transition: all 0.3s;
+  }
+
+  .progress-step.done { background: var(--mint); }
+  .progress-step.current { background: var(--mint); opacity: 0.5; }
+</style>
+
+<h2 class="sr-only">GrowthRing — Discovery network for active X users. Navigate between Landing, Feed, Profile, and Create Profile pages.</h2>
+
+<nav>
+  <div class="logo" onclick="showPage('landing')">
+    <div class="logo-ring"></div>
+    GrowthRing
+  </div>
+  <div class="nav-actions">
+    <button class="btn btn-ghost btn-sm" onclick="showPage('feed')">Browse Feed</button>
+    <button class="btn btn-primary btn-sm" onclick="showPage('create')">Create Profile</button>
+  </div>
+</nav>
+
+<!-- LANDING PAGE -->
+<div id="page-landing" class="page active">
+  <div class="hero">
+    <div class="hero-eyebrow">
+      <span class="live-dot"></span>
+      <span>1,247 users active today</span>
+    </div>
+    <h1>Discover active accounts.<br><span>Grow together</span> on X.</h1>
+    <p class="hero-sub">The discovery network for active X users who want real visibility, real engagement, and real growth — not random follows.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="showPage('create')">Create Your Profile</button>
+      <button class="btn btn-outline" onclick="showPage('feed')">Browse the Feed</button>
+    </div>
+    <div class="live-stats">
+      <div class="live-stat-item">
+        <span class="live-stat-num" id="stat-users">4,832</span>
+        <span class="live-stat-label">Profiles created</span>
+      </div>
+      <div class="live-stat-item">
+        <span class="live-stat-num">1,247</span>
+        <span class="live-stat-label">Active today</span>
+      </div>
+      <div class="live-stat-item">
+        <span class="live-stat-num">38.4K</span>
+        <span class="live-stat-label">Profile views</span>
+      </div>
+      <div class="live-stat-item">
+        <span class="live-stat-num">12.1K</span>
+        <span class="live-stat-label">X clicks out</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section-pad">
+      <div class="section-header">
+        <h2 class="section-title">Trending Growers Today</h2>
+        <button class="section-link" onclick="showPage('feed')">See all →</button>
+      </div>
+      <div class="trending-grid">
+        <div class="trending-card" onclick="showPage('profile')">
+          <div class="trending-rank"><span>#1 TODAY</span><span class="status-badge badge-green"><span class="status-dot dot-green"></span>Active Now</span></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div class="avatar">b0</div>
+            <div>
+              <div class="handle">@by0x_</div>
+              <div class="niche-label">Web3 Explorer</div>
+            </div>
+          </div>
+          <div class="stat-row"><strong>38</strong>&nbsp;followers · <strong>124</strong>&nbsp;views today</div>
+        </div>
+        <div class="trending-card">
+          <div class="trending-rank"><span>#2 TODAY</span><span class="status-badge badge-green"><span class="status-dot dot-green"></span>Active Now</span></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div class="avatar">id</div>
+            <div>
+              <div class="handle">@indie_dev</div>
+              <div class="niche-label">SaaS Founder</div>
+            </div>
+          </div>
+          <div class="stat-row"><strong>1.2K</strong>&nbsp;followers · <strong>98</strong>&nbsp;views today</div>
+        </div>
+        <div class="trending-card">
+          <div class="trending-rank"><span>#3 TODAY</span><span class="status-badge badge-amber"><span class="status-dot dot-amber"></span>This Week</span></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div class="avatar">dp</div>
+            <div>
+              <div class="handle">@designer_pro</div>
+              <div class="niche-label">UI/UX Designer</div>
+            </div>
+          </div>
+          <div class="stat-row"><strong>540</strong>&nbsp;followers · <strong>72</strong>&nbsp;views today</div>
+        </div>
+        <div class="trending-card">
+          <div class="trending-rank"><span>#4 TODAY</span><span class="status-badge badge-blue"><span class="status-dot dot-blue"></span>New Member</span></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div class="avatar">ai</div>
+            <div>
+              <div class="handle">@aibuilder</div>
+              <div class="niche-label">AI Developer</div>
+            </div>
+          </div>
+          <div class="stat-row"><strong>89</strong>&nbsp;followers · <strong>61</strong>&nbsp;views today</div>
+        </div>
+        <div class="trending-card">
+          <div class="trending-rank"><span>#5 TODAY</span><span class="status-badge badge-green"><span class="status-dot dot-green"></span>Active Now</span></div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div class="avatar">mk</div>
+            <div>
+              <div class="handle">@mktg_kate</div>
+              <div class="niche-label">Growth Marketer</div>
+            </div>
+          </div>
+          <div class="stat-row"><strong>2.3K</strong>&nbsp;followers · <strong>55</strong>&nbsp;views today</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-section">
+      <div class="section-header">
+        <h2 class="section-title">How it works</h2>
+      </div>
+      <div class="how-steps">
+        <div class="how-step">
+          <span class="step-num">STEP 01</span>
+          <div class="step-title">Create your profile</div>
+          <p class="step-desc">Add your X handle, niche, bio, and what you're looking for. Takes under 2 minutes.</p>
+        </div>
+        <div class="how-step">
+          <span class="step-num">STEP 02</span>
+          <div class="step-title">Appear in the feed</div>
+          <p class="step-desc">Your profile is discoverable to thousands of active users filtering by niche and activity.</p>
+        </div>
+        <div class="how-step">
+          <span class="step-num">STEP 03</span>
+          <div class="step-title">Get discovered</div>
+          <p class="step-desc">Collect profile views, climb the daily rankings, and attract followers in your exact niche.</p>
+        </div>
+        <div class="how-step">
+          <span class="step-num">STEP 04</span>
+          <div class="step-title">Share your rank</div>
+          <p class="step-desc">Auto-generated share cards let you post your ranking on X and loop in more users.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta-section">
+      <div class="cta-box">
+        <h2>Ready to get discovered?</h2>
+        <p>Join thousands of active X users already growing on GrowthRing. It's free to get started.</p>
+        <button class="btn btn-primary" onclick="showPage('create')" style="padding:12px 32px;font-size:15px">Create Your Profile</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEED PAGE -->
+<div id="page-feed" class="page">
+  <div class="container">
+    <div class="feed-header">
+      <h1>Discovery Feed</h1>
+      <p>4,832 active profiles — updated in real time</p>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-chip active" onclick="setFilter(this,'All')">All</button>
+      <button class="filter-chip" onclick="setFilter(this,'Web3')">Web3</button>
+      <button class="filter-chip" onclick="setFilter(this,'AI')">AI</button>
+      <button class="filter-chip" onclick="setFilter(this,'SaaS')">SaaS</button>
+      <button class="filter-chip" onclick="setFilter(this,'Design')">Design</button>
+      <button class="filter-chip" onclick="setFilter(this,'Marketing')">Marketing</button>
+      <button class="filter-chip" onclick="setFilter(this,'Creator')">Creator</button>
+      <select class="sort-select" onchange="sortFeed(this.value)">
+        <option>Most Active</option>
+        <option>Newest</option>
+        <option>Fastest Growing</option>
+        <option>Most Viewed</option>
+      </select>
+    </div>
+
+    <div class="feed-grid" id="feed-grid">
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE PAGE -->
+<div id="page-profile" class="page">
+  <div class="container">
+    <div class="profile-hero">
+      <div class="profile-top">
+        <div class="avatar avatar-lg">b0</div>
+        <div class="profile-meta">
+          <div class="profile-name">Byx Zero</div>
+          <span class="profile-handle">@by0x_</span>
+          <p class="profile-bio">Building on Web3. Exploring decentralized systems, DeFi protocols, and the open internet. Always down to connect with other builders.</p>
+          <div class="profile-tags">
+            <span class="niche-tag">Web3</span>
+            <span class="niche-tag">DeFi</span>
+            <span class="niche-tag">Crypto</span>
+            <span class="niche-tag">🇮🇩 Indonesia</span>
+          </div>
+          <div class="profile-actions">
+            <button class="btn btn-primary btn-sm">Follow on X</button>
+            <button class="btn btn-outline btn-sm">View X Profile</button>
+            <span class="status-badge badge-green" style="margin-left:4px"><span class="status-dot dot-green"></span>Active Today</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="stat-box">
+          <span class="stat-box-num">38</span>
+          <div class="stat-box-label">Followers on X</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-box-num">124</span>
+          <div class="stat-box-label">Profile views today</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-box-num">#1</span>
+          <div class="stat-box-label">Rank today</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <div class="section-title" style="font-size:14px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Looking For</div>
+      <div class="looking-for-grid">
+        <div class="lf-item"><div class="lf-check"></div>Mutuals</div>
+        <div class="lf-item"><div class="lf-check"></div>Engagement</div>
+        <div class="lf-item"><div class="lf-check"></div>Web3 Friends</div>
+        <div class="lf-item"><div class="lf-check"></div>Collaboration</div>
+      </div>
+    </div>
+
+    <div class="share-card">
+      <div class="share-card-text">
+        <strong>Ranked #1 on GrowthRing today.</strong>
+        Share this to X to bring in more visitors.
+      </div>
+      <button class="btn btn-primary btn-sm">Share Ranking</button>
+    </div>
+
+    <div style="padding:24px 0 40px">
+      <button class="btn btn-ghost btn-sm" onclick="showPage('feed')">← Back to Feed</button>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE PROFILE PAGE -->
+<div id="page-create" class="page">
+  <div class="container">
+    <div class="create-page">
+      <div class="create-header">
+        <h1>Create your profile</h1>
+        <p>Join the discovery network. Get found by active X users in your niche.</p>
+      </div>
+
+      <div class="progress-steps">
+        <div class="progress-step done" id="ps1"></div>
+        <div class="progress-step current" id="ps2"></div>
+        <div class="progress-step" id="ps3"></div>
+      </div>
+
+      <div class="create-form">
+        <div class="form-group">
+          <label>X Username</label>
+          <input type="text" placeholder="@yourhandle" id="input-handle" oninput="updatePreview()" />
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Display Name</label>
+            <input type="text" placeholder="Your name" id="input-name" oninput="updatePreview()" />
+          </div>
+          <div class="form-group">
+            <label>Country</label>
+            <select id="input-country">
+              <option>Indonesia</option>
+              <option>United States</option>
+              <option>United Kingdom</option>
+              <option>Singapore</option>
+              <option>Malaysia</option>
+              <option>Philippines</option>
+              <option>India</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Bio</label>
+          <textarea rows="3" placeholder="Tell people what you build, create, or explore..." id="input-bio"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>Your Niche</label>
+          <div class="checkbox-group" id="niche-group">
+            <span class="checkbox-pill" onclick="togglePill(this)">Web3</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">AI</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">SaaS</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">Design</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">Marketing</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">Creator</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">Developer</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">Founder</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Looking For</label>
+          <div class="checkbox-group" id="lf-group">
+            <span class="checkbox-pill" onclick="togglePill(this)">Mutuals</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">Engagement</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">Collaboration</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">Networking</span>
+            <span class="checkbox-pill" onclick="togglePill(this)">Followers</span>
+          </div>
+        </div>
+
+        <div style="margin-top:28px;padding:20px;background:var(--bg3);border:1px solid var(--border);border-radius:var(--radius)">
+          <div style="font-size:12px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:14px">Preview</div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+            <div class="avatar" id="prev-avatar">?</div>
+            <div>
+              <div class="handle" id="prev-handle">@yourhandle</div>
+              <div class="niche-label" id="prev-niche">Your niche</div>
+            </div>
+          </div>
+          <span class="status-badge badge-blue"><span class="status-dot dot-blue"></span>New Member</span>
+        </div>
+
+        <div style="margin-top:28px;display:flex;gap:12px">
+          <button class="btn btn-primary" style="flex:1;justify-content:center;padding:12px" onclick="submitProfile()">Join GrowthRing</button>
+          <button class="btn btn-ghost" onclick="showPage('landing')">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const users = [
+  { handle:'@by0x_', name:'Byx Zero', niche:'Web3', status:'green', followers:'38', views:'124', country:'ID', looking:['Mutuals','Engagement','Web3 Friends'] },
+  { handle:'@indie_dev', name:'Indie Dev', niche:'SaaS', status:'green', followers:'1.2K', views:'98', country:'US', looking:['Collaboration','Followers'] },
+  { handle:'@designer_pro', name:'Designer Pro', niche:'Design', status:'amber', followers:'540', views:'72', country:'UK', looking:['Networking','Engagement'] },
+  { handle:'@aibuilder', name:'AI Builder', niche:'AI', status:'blue', followers:'89', views:'61', country:'SG', looking:['Mutuals','Collaboration'] },
+  { handle:'@mktg_kate', name:'Kate Mktg', niche:'Marketing', status:'green', followers:'2.3K', views:'55', country:'US', looking:['Networking'] },
+  { handle:'@web3_jess', name:'Jess Web3', niche:'Web3', status:'amber', followers:'210', views:'49', country:'ID', looking:['Mutuals','Web3 Friends'] },
+  { handle:'@creatorhub', name:'Creator Hub', niche:'Creator', status:'green', followers:'5.1K', views:'47', country:'PH', looking:['Followers','Engagement'] },
+  { handle:'@dev_solo', name:'Dev Solo', niche:'SaaS', status:'blue', followers:'17', views:'38', country:'IN', looking:['Mutuals','Collaboration'] },
+  { handle:'@uxnomad', name:'UX Nomad', niche:'Design', status:'green', followers:'920', views:'33', country:'NL', looking:['Networking'] },
+  { handle:'@crypto_jan', name:'Jan Crypto', niche:'Web3', status:'amber', followers:'305', views:'29', country:'DE', looking:['Mutuals'] },
+  { handle:'@saas_pete', name:'Pete SaaS', niche:'SaaS', status:'green', followers:'780', views:'27', country:'CA', looking:['Followers','Networking'] },
+  { handle:'@airesearch', name:'AI Research', niche:'AI', status:'blue', followers:'44', views:'24', country:'JP', looking:['Collaboration'] },
+];
+
+let currentFilter = 'All';
+
+function renderFeed(filter) {
+  const grid = document.getElementById('feed-grid');
+  const filtered = filter === 'All' ? users : users.filter(u => u.niche === filter);
+  grid.innerHTML = filtered.map((u,i) => {
+    const statusClass = u.status === 'green' ? 'badge-green' : u.status === 'amber' ? 'badge-amber' : 'badge-blue';
+    const dotClass = u.status === 'green' ? 'dot-green' : u.status === 'amber' ? 'dot-amber' : 'dot-blue';
+    const statusLabel = u.status === 'green' ? 'Active Today' : u.status === 'amber' ? 'This Week' : 'New Member';
+    const initials = u.handle.replace('@','').substring(0,2);
+    const lfHtml = u.looking.map(l => `<span class="niche-tag">${l}</span>`).join('');
+    return `<div class="feed-card" onclick="showPage('profile')">
+      <div class="feed-card-top">
+        <div style="display:flex;gap:10px;align-items:center;flex:1;min-width:0">
+          <div class="avatar">${initials}</div>
+          <div class="feed-card-info">
+            <div class="handle">${u.handle}</div>
+            <div class="niche-label">${u.niche}</div>
+          </div>
+        </div>
+        <span class="status-badge ${statusClass}" style="flex-shrink:0"><span class="status-dot ${dotClass}"></span></span>
+      </div>
+      <div class="looking-tags">${lfHtml}</div>
+      <div class="feed-card-stats">
+        <div class="mini-stat"><strong>${u.followers}</strong><span>followers</span></div>
+        <div class="mini-stat"><strong>${u.views}</strong><span>views/day</span></div>
+        <div class="mini-stat"><strong>${u.country}</strong><span>country</span></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function setFilter(el, filter) {
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  currentFilter = filter;
+  renderFeed(filter);
+}
+
+function sortFeed(val) {
+  renderFeed(currentFilter);
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo(0,0);
+  if (name === 'feed') renderFeed('All');
+}
+
+function togglePill(el) {
+  el.classList.toggle('selected');
+  updatePreview();
+}
+
+function updatePreview() {
+  const handle = document.getElementById('input-handle').value || '@yourhandle';
+  const name = document.getElementById('input-name').value;
+  const selectedNiches = [...document.querySelectorAll('#niche-group .checkbox-pill.selected')].map(el => el.textContent);
+  document.getElementById('prev-handle').textContent = handle.startsWith('@') ? handle : '@' + handle;
+  document.getElementById('prev-niche').textContent = selectedNiches.length ? selectedNiches.join(', ') : 'Your niche';
+  const initials = handle.replace('@','').substring(0,2) || '?';
+  document.getElementById('prev-avatar').textContent = initials;
+}
+
+function submitProfile() {
+  const handle = document.getElementById('input-handle').value;
+  if (!handle) { document.getElementById('input-handle').focus(); return; }
+  showPage('profile');
+}
+
+renderFeed('All');
+
+let count = 4832;
+setInterval(() => {
+  if (Math.random() > 0.7) {
+    count++;
+    const el = document.getElementById('stat-users');
+    if (el) el.textContent = count.toLocaleString();
+  }
+}, 3000);
+</script>
