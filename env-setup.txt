@@ -1,0 +1,13 @@
+Buka `C:\Users\dhaby\growth-ring\.env` dan isi:
+```env
+# MySQL
+DATABASE_URL="mysql://root:@localhost:3306/growthring"
+
+# X/Twitter OAuth
+TWITTER_CONSUMER_KEY=...paste your consumer key here...
+TWITTER_CONSUMER_SECRET=...paste your consumer secret here...
+
+# NextAuth
+NEXTAUTH_SECRET=BEKXXd...paste the secret here...
+NEXTAUTH_URL=http://localhost:3000
+```

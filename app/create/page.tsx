@@ -1,12 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import AuthNav from "../AuthNav";
 
 const lookingForOptions = ["Mutuals", "Engagement", "Collaboration", "Networking", "Followers"];
 const nicheOptions = ["Web3", "AI", "SaaS", "Marketing", "Design", "Creator", "General"];
 
 export default function CreateProfilePage() {
+  const router = useRouter();
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState({
     xUsername: "",
     displayName: "",
@@ -15,6 +19,20 @@ export default function CreateProfilePage() {
     country: "",
     lookingFor: [] as string[],
   });
+
+  // Pre-fill from URL params (from auth callback)
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const xU = params.get("xUsername");
+    const dN = params.get("displayName");
+    if (xU || dN) {
+      setForm(prev => ({
+        ...prev,
+        xUsername: xU || prev.xUsername,
+        displayName: dN || prev.displayName,
+      }));
+    }
+  }, []);
 
   const toggleLookingFor = (item: string) => {
     setForm(prev => ({
@@ -25,22 +43,40 @@ export default function CreateProfilePage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Profile created! (Demo — database integration coming next)");
+    setSubmitting(true);
+
+    try {
+      const res = await fetch("/api/profiles", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          xUsername: form.xUsername.replace("@", ""),
+          displayName: form.displayName,
+          bio: form.bio,
+          niche: form.niche,
+          country: form.country,
+          lookingFor: form.lookingFor,
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        router.push("/profile/" + data.profile.xUsername);
+      } else {
+        alert("Error: " + data.error);
+      }
+    } catch (err) {
+      alert("Failed to create profile");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div className="min-h-screen">
-      <nav>
-        <Link href="/" className="logo">
-          <div className="logo-ring" />
-          GrowthRing
-        </Link>
-        <div className="nav-actions">
-          <Link href="/feed" className="btn btn-ghost btn-sm">Feed</Link>
-        </div>
-      </nav>
+      <AuthNav />
 
       <div className="container" style={{ maxWidth: 600, paddingTop: 40, paddingBottom: 80 }}>
         <h1 style={{ fontSize: 26, fontWeight: 700, letterSpacing: -0.8, marginBottom: 4 }}>Create Your Profile</h1>
@@ -137,8 +173,8 @@ export default function CreateProfilePage() {
             </div>
           )}
 
-          <button type="submit" className="btn btn-primary" style={{ width: "100%", justifyContent: "center", padding: "12px 0", fontSize: 15 }}>
-            Create Profile
+          <button type="submit" className="btn btn-primary" style={{ width: "100%", justifyContent: "center", padding: "12px 0", fontSize: 15 }} disabled={submitting}>
+            {submitting ? "Creating..." : "Create Profile"}
           </button>
         </form>
       </div>
